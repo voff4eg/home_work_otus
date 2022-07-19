@@ -22,7 +22,9 @@ func Unpack(s string) (string, error) {
 		backSlashCounter = 0
 	)
 
-	for i, curRune := range s {
+	sRune := []rune(s)
+
+	for i, curRune := range sRune {
 		switch {
 		case isBackSlash(curRune):
 			backSlashCounter++
@@ -91,11 +93,13 @@ func getRune(i int, s string) rune {
 		return 0
 	}
 
-	if i >= len(s) {
+	sT := []rune(s)
+
+	if i >= len(sT) {
 		return 0
 	}
 
-	return rune(s[i])
+	return sT[i]
 }
 
 func getPrevRune(i int, s string) rune {
@@ -107,11 +111,13 @@ func isNextDigit(i int, s string) bool {
 		return false
 	}
 
-	if i >= len(s) {
+	sT := []rune(s)
+
+	if i >= len(sT) {
 		return false
 	}
 
-	return unicode.IsDigit(rune(s[i]))
+	return unicode.IsDigit(sT[i])
 }
 
 func isBackSlash(r rune) bool {
@@ -122,7 +128,9 @@ func addString(sb *strings.Builder, s string, m int) {
 	if m <= 0 {
 		t := sb.String()
 		sb.Reset()
-		sb.WriteString(t[:len(t)+m])
+		sT := []rune(t)
+		sT = sT[:len(sT)-1]
+		sb.WriteString(string(sT))
 	} else {
 		sb.WriteString(strings.Repeat(s, m))
 	}
