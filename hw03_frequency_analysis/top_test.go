@@ -80,3 +80,26 @@ func TestTop10(t *testing.T) {
 		}
 	})
 }
+
+func TestLexicographicSort(t *testing.T) {
+	tests := []struct {
+		prev     string
+		next     string
+		expected bool
+	}{
+		{prev: "abcd", next: "acde", expected: false},
+		{prev: "acde", next: "abcd", expected: true},
+		{prev: "acd", next: "abcde", expected: true},
+		{prev: "acdef", next: "ab", expected: true},
+		{prev: "abf", next: "ab", expected: false},
+		{prev: "ab", next: "acff", expected: false},
+	}
+
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.prev, func(t *testing.T) {
+			result := LexicographicSort(tc.prev, tc.next)
+			require.Equal(t, tc.expected, result)
+		})
+	}
+}
