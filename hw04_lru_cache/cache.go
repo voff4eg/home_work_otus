@@ -24,8 +24,8 @@ func (cache *lruCache) Set(key Key, value interface{}) bool {
 		key:   key,
 		value: value,
 	}
-	_, found := cache.items[key]
-	if !found {
+
+	if _, found := cache.items[key]; !found {
 		cache.items[key] = cache.queue.PushFront(ci)
 		if cache.queue.Len() > cache.capacity {
 			delete(cache.items, cache.queue.Back().Value.(*cacheItem).key)
@@ -42,9 +42,7 @@ func (cache *lruCache) Set(key Key, value interface{}) bool {
 }
 
 func (cache *lruCache) Get(key Key) (interface{}, bool) {
-	_, found := cache.items[key]
-
-	if found {
+	if _, found := cache.items[key]; found {
 		cache.queue.MoveToFront(cache.items[key])
 		return cache.items[key].Value.(*cacheItem).value, true
 	}
